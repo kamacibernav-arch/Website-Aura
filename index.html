@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AURA Bar &amp; Lounge – Shisha · Cocktails · Nightlife in Walsrode</title>
+<meta name="description" content="AURA Bar & Lounge Walsrode – Premium Shisha, Cocktails und Lounge-Atmosphäre. Verdener Str. 11, 29664 Walsrode. Täglich ab 17:00 Uhr.">
+<style>
+/* ============================================================
+   AURA BAR & LOUNGE – Design-System
+   Farbwelt: Mitternachtsblau / Schwarz, Eisblau-Glow, Silber
+   ============================================================ */
+:root{
+  --bg-0:#04060e;
+  --bg-1:#070b18;
+  --bg-2:#0b1226;
+  --panel:rgba(13,20,42,.55);
+  --line:rgba(120,160,255,.14);
+  --ice:#7db8ff;
+  --ice-bright:#b7dcff;
+  --glow:#3f7dff;
+  --txt:#e8eefc;
+  --txt-dim:#8b97b8;
+  --radius:18px;
+  --font-display:'Marcellus', Georgia, 'Times New Roman', serif;
+  --font-body:'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+@font-face{font-family:'Marcellus';src:local('Marcellus'),local('Georgia');}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg-0);
+  color:var(--txt);
+  font-family:var(--font-body);
+  line-height:1.7;
+  overflow-x:hidden;
+}
+::selection{background:var(--glow);color:#fff;}
+
+/* ---------- Hintergrund: Tiefe + Nebel ---------- */
+.bg-scene{position:fixed;inset:0;z-index:-3;background:
+  radial-gradient(1200px 800px at 80% -10%, #0d1a3d 0%, transparent 60%),
+  radial-gradient(1000px 700px at 10% 110%, #091430 0%, transparent 55%),
+  linear-gradient(180deg,var(--bg-0) 0%,var(--bg-1) 50%,var(--bg-0) 100%);}
+.smoke{position:fixed;border-radius:50%;filter:blur(90px);opacity:.35;z-index:-2;pointer-events:none;}
+.smoke-1{width:46vw;height:46vw;background:radial-gradient(circle,#122a5e 0%,transparent 70%);top:-12vw;right:-10vw;animation:drift 26s ease-in-out infinite alternate;}
+.smoke-2{width:38vw;height:38vw;background:radial-gradient(circle,#0e2148 0%,transparent 70%);bottom:-8vw;left:-12vw;animation:drift 32s ease-in-out infinite alternate-reverse;}
+@keyframes drift{
+  0%{transform:translate(0,0) scale(1);}
+  100%{transform:translate(6vw,4vh) scale(1.15);}
+}
+
+/* ---------- Der Diamant: fixiert, immer sichtbar ---------- */
+#diamond-stage{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;
+}
+#diamond{
+  width:min(52vw,560px);height:min(52vw,560px);
+  animation:diamondFloat 9s ease-in-out infinite;
+  will-change:transform;
+  filter:drop-shadow(0 0 42px rgba(63,125,255,.38)) drop-shadow(0 0 120px rgba(63,125,255,.18));
+}
+@keyframes diamondFloat{
+  0%,100%{translate:0 -12px;}
+  50%{translate:0 14px;}
+}
+#diamond{perspective:900px;}
+#diamond svg{width:100%;height:100%;overflow:visible;animation:spinY 16s linear infinite;transform-style:preserve-3d;}
+@keyframes spinY{from{transform:rotateY(0deg);}to{transform:rotateY(360deg);}}
+.facet{fill:none;stroke:url(#iceGrad);stroke-width:1.1;opacity:.85;}
+.facet-fill{fill:url(#facetFill);opacity:.10;stroke:none;}
+.sparkle{fill:#cfe6ff;opacity:0;animation:twinkle 3.4s ease-in-out infinite;}
+.sparkle:nth-child(2){animation-delay:1.1s;}
+.sparkle:nth-child(3){animation-delay:2.2s;}
+@keyframes twinkle{0%,100%{opacity:0;transform:scale(.4);}50%{opacity:.9;transform:scale(1);}}
+.diamond-ring{fill:none;stroke:rgba(125,184,255,.10);stroke-dasharray:3 9;animation:ringSpin 60s linear infinite;transform-origin:center;}
+@keyframes ringSpin{to{transform:rotate(360deg);}}
+
+/* ---------- Navigation ---------- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:16px clamp(20px,5vw,64px);
+  background:linear-gradient(180deg,rgba(4,6,14,.85),rgba(4,6,14,0));
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  transition:background .4s;
+}
+nav.scrolled{background:rgba(5,8,18,.92);border-bottom:1px solid var(--line);}
+.logo{font-family:var(--font-display);font-size:1.5rem;letter-spacing:.42em;color:var(--txt);text-decoration:none;display:flex;align-items:center;gap:.6em;}
+.logo .gem{display:inline-block;width:14px;height:14px;background:linear-gradient(135deg,var(--ice-bright),var(--glow));clip-path:polygon(50% 0,100% 38%,50% 100%,0 38%);animation:gemPulse 3s ease-in-out infinite;}
+@keyframes gemPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.6);}}
+.nav-links{display:flex;gap:clamp(14px,3vw,36px);list-style:none;}
+.nav-links a{color:var(--txt-dim);text-decoration:none;font-size:.82rem;letter-spacing:.18em;text-transform:uppercase;transition:color .3s;position:relative;}
+.nav-links a::after{content:'';position:absolute;left:0;bottom:-6px;width:0;height:1px;background:var(--ice);transition:width .35s;}
+.nav-links a:hover{color:var(--ice-bright);}
+.nav-links a:hover::after{width:100%;}
+@media(max-width:760px){.nav-links{display:none;}}
+.nav-status{display:flex;align-items:center;gap:8px;font-size:.78rem;letter-spacing:.08em;padding:7px 15px;border:1px solid var(--line);border-radius:99px;background:rgba(10,16,34,.6);}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#39d98a;box-shadow:0 0 10px #39d98a;animation:pulse 2s infinite;}
+.status-dot.closed{background:#ff5470;box-shadow:0 0 10px #ff5470;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.45;}}
+
+/* ---------- Hero ---------- */
+header{
+  min-height:100svh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:120px 24px 80px;position:relative;
+}
+.hero-kicker{
+  font-size:.8rem;letter-spacing:.5em;text-transform:uppercase;color:var(--ice);
+  margin-bottom:26px;opacity:0;animation:riseIn 1s .2s forwards;
+}
+h1{
+  font-family:var(--font-display);
+  font-size:clamp(3.4rem,13vw,9.5rem);
+  font-weight:400;letter-spacing:.18em;line-height:1;
+  background:linear-gradient(180deg,#fff 20%,#a8c8f5 55%,#4d6fb8 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  opacity:0;animation:riseIn 1.1s .4s forwards;
+  text-shadow:0 0 80px rgba(63,125,255,.25);
+}
+.hero-sub{
+  font-family:var(--font-display);font-size:clamp(1rem,2.6vw,1.5rem);
+  letter-spacing:.34em;text-transform:uppercase;color:var(--txt-dim);
+  margin-top:18px;opacity:0;animation:riseIn 1s .7s forwards;
+}
+.hero-claim{
+  max-width:520px;margin-top:26px;color:var(--txt-dim);font-size:1.02rem;
+  opacity:0;animation:riseIn 1s .9s forwards;
+}
+.hero-claim strong{color:var(--ice-bright);font-weight:600;}
+.hero-cta{display:flex;gap:16px;margin-top:42px;flex-wrap:wrap;justify-content:center;opacity:0;animation:riseIn 1s 1.1s forwards;}
+@keyframes riseIn{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+.btn{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:15px 34px;border-radius:99px;text-decoration:none;
+  font-size:.86rem;letter-spacing:.16em;text-transform:uppercase;
+  transition:transform .3s,box-shadow .3s,background .3s;
+}
+.btn-primary{background:linear-gradient(135deg,#2f6bff,#123a94);color:#fff;box-shadow:0 8px 34px rgba(47,107,255,.35);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 14px 44px rgba(47,107,255,.55);}
+.btn-ghost{border:1px solid rgba(125,184,255,.35);color:var(--ice-bright);background:rgba(10,16,34,.4);}
+.btn-ghost:hover{transform:translateY(-3px);background:rgba(63,125,255,.14);border-color:var(--ice);}
+.scroll-hint{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);color:var(--txt-dim);font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;opacity:0;animation:riseIn 1s 1.6s forwards;}
+.scroll-hint::after{content:'';display:block;width:1px;height:44px;background:linear-gradient(180deg,var(--ice),transparent);margin:10px auto 0;animation:scrollLine 2s ease-in-out infinite;}
+@keyframes scrollLine{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+/* ---------- Sektionen allgemein ---------- */
+section{padding:clamp(80px,12vh,140px) clamp(20px,6vw,72px);max-width:1200px;margin:0 auto;position:relative;}
+.sec-kicker{font-size:.75rem;letter-spacing:.5em;text-transform:uppercase;color:var(--ice);margin-bottom:14px;}
+h2{font-family:var(--font-display);font-weight:400;font-size:clamp(2rem,5vw,3.2rem);letter-spacing:.06em;margin-bottom:22px;color:#f2f6ff;}
+.lead{color:var(--txt-dim);max-width:640px;font-size:1.05rem;}
+
+/* Scroll-Reveal */
+.reveal{opacity:0;transform:translateY(44px);transition:opacity .9s cubic-bezier(.2,.7,.3,1),transform .9s cubic-bezier(.2,.7,.3,1);}
+.reveal.in{opacity:1;transform:none;}
+.reveal-d1{transition-delay:.12s;}
+.reveal-d2{transition-delay:.24s;}
+.reveal-d3{transition-delay:.36s;}
+
+/* ---------- Zahlen / Counter ---------- */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px;margin-top:54px;}
+.stat{
+  padding:34px 26px;border:1px solid var(--line);border-radius:var(--radius);
+  background:var(--panel);backdrop-filter:blur(10px);
+  text-align:center;transition:transform .35s,border-color .35s,box-shadow .35s;
+}
+.stat:hover{transform:translateY(-6px);border-color:rgba(125,184,255,.4);box-shadow:0 18px 48px rgba(20,50,140,.35);}
+.stat-num{font-family:var(--font-display);font-size:clamp(2.4rem,5vw,3.4rem);color:var(--ice-bright);line-height:1.1;}
+.stat-num .unit{font-size:.5em;color:var(--ice);}
+.stat-label{margin-top:8px;font-size:.78rem;letter-spacing:.22em;text-transform:uppercase;color:var(--txt-dim);}
+.stars{color:#ffd166;font-size:1rem;letter-spacing:.2em;margin-top:6px;}
+
+/* ---------- Über uns ---------- */
+.about-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(30px,5vw,70px);align-items:center;}
+@media(max-width:860px){.about-grid{grid-template-columns:1fr;}}
+.about-visual{
+  aspect-ratio:4/5;border-radius:var(--radius);position:relative;overflow:hidden;
+  background:
+    radial-gradient(140% 90% at 85% 10%,rgba(63,125,255,.35) 0%,transparent 50%),
+    radial-gradient(120% 100% at 10% 95%,rgba(18,42,94,.9) 0%,transparent 60%),
+    linear-gradient(160deg,#0a1330 0%,#050912 100%);
+  border:1px solid var(--line);
+}
+.about-visual::before{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(115deg,transparent 0 34px,rgba(125,184,255,.06) 34px 35px);
+}
+.about-visual .inner-gem{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:52%;aspect-ratio:1;background:linear-gradient(135deg,rgba(183,220,255,.22),rgba(47,107,255,.1));
+  clip-path:polygon(50% 0,100% 38%,50% 100%,0 38%);
+  border:1px solid rgba(183,220,255,.3);
+  animation:gemBreath 5s ease-in-out infinite;
+}
+@keyframes gemBreath{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.8;}50%{transform:translate(-50%,-50%) scale(1.06);opacity:1;}}
+.about-visual .caption{position:absolute;bottom:20px;left:24px;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:var(--txt-dim);}
+.feature-list{list-style:none;margin-top:26px;display:grid;gap:14px;}
+.feature-list li{display:flex;gap:14px;align-items:flex-start;color:var(--txt-dim);}
+.feature-list .diamond-bullet{flex:0 0 auto;width:11px;height:11px;margin-top:8px;background:linear-gradient(135deg,var(--ice-bright),var(--glow));clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%);}
+.feature-list strong{color:var(--txt);}
+
+/* ---------- Karte / Leistungen ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:20px;margin-top:54px;}
+.card{
+  position:relative;padding:38px 30px;border-radius:var(--radius);
+  border:1px solid var(--line);background:var(--panel);backdrop-filter:blur(10px);
+  overflow:hidden;transition:transform .35s,border-color .35s,box-shadow .35s;
+}
+.card::before{
+  content:'';position:absolute;top:-60px;right:-60px;width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(63,125,255,.28),transparent 70%);
+  transition:transform .5s;
+}
+.card:hover{transform:translateY(-8px);border-color:rgba(125,184,255,.45);box-shadow:0 22px 60px rgba(15,40,120,.45);}
+.card:hover::before{transform:scale(1.6);}
+.card-icon{width:52px;height:52px;margin-bottom:22px;display:grid;place-items:center;border-radius:14px;background:linear-gradient(135deg,rgba(63,125,255,.25),rgba(63,125,255,.05));border:1px solid rgba(125,184,255,.3);font-size:1.5rem;}
+.card h3{font-family:var(--font-display);font-weight:400;font-size:1.35rem;letter-spacing:.05em;margin-bottom:10px;}
+.card p{color:var(--txt-dim);font-size:.95rem;}
+.card .price{display:inline-block;margin-top:18px;font-size:.8rem;letter-spacing:.14em;color:var(--ice);border:1px solid rgba(125,184,255,.3);border-radius:99px;padding:5px 14px;}
+
+/* ---------- Öffnungszeiten + Uhr ---------- */
+.hours-wrap{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:start;}
+@media(max-width:860px){.hours-wrap{grid-template-columns:1fr;}}
+.clock-panel{
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);
+  backdrop-filter:blur(10px);padding:44px 34px;text-align:center;
+}
+#live-clock{font-family:var(--font-display);font-size:clamp(3rem,7vw,4.6rem);letter-spacing:.08em;color:var(--ice-bright);font-variant-numeric:tabular-nums;line-height:1;}
+#live-date{margin-top:10px;color:var(--txt-dim);font-size:.85rem;letter-spacing:.2em;text-transform:uppercase;}
+#open-badge{
+  display:inline-flex;align-items:center;gap:10px;margin-top:26px;
+  padding:12px 26px;border-radius:99px;font-size:.9rem;letter-spacing:.14em;text-transform:uppercase;
+  border:1px solid rgba(57,217,138,.4);background:rgba(57,217,138,.1);color:#5ee8a5;
+}
+#open-badge.closed{border-color:rgba(255,84,112,.4);background:rgba(255,84,112,.08);color:#ff8298;}
+#open-note{margin-top:14px;font-size:.85rem;color:var(--txt-dim);}
+.hours-table{width:100%;border-collapse:collapse;margin-top:8px;}
+.hours-table td{padding:15px 6px;border-bottom:1px solid var(--line);font-size:.98rem;}
+.hours-table td:last-child{text-align:right;color:var(--ice-bright);font-variant-numeric:tabular-nums;}
+.hours-table tr.today td{color:#fff;}
+.hours-table tr.today td:first-child::before{content:'◆ ';color:var(--ice);}
+.hours-table tr.today{background:linear-gradient(90deg,rgba(63,125,255,.12),transparent);}
+
+/* ---------- Kontakt ---------- */
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;margin-top:54px;}
+.contact-card{
+  border:1px solid var(--line);border-radius:var(--radius);background:var(--panel);
+  backdrop-filter:blur(10px);padding:36px 30px;transition:transform .35s,border-color .35s;
+}
+.contact-card:hover{transform:translateY(-6px);border-color:rgba(125,184,255,.45);}
+.contact-card h3{font-family:var(--font-display);font-weight:400;font-size:1.15rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ice);margin-bottom:14px;}
+.contact-card p{color:var(--txt-dim);font-size:.98rem;}
+.contact-card a.big-link{color:var(--txt);text-decoration:none;font-size:1.25rem;font-family:var(--font-display);letter-spacing:.05em;transition:color .3s;}
+.contact-card a.big-link:hover{color:var(--ice-bright);}
+.contact-cta{display:flex;gap:16px;flex-wrap:wrap;margin-top:44px;}
+
+/* ---------- Footer ---------- */
+footer{
+  border-top:1px solid var(--line);
+  padding:44px clamp(20px,6vw,72px);
+  display:flex;flex-wrap:wrap;gap:18px;align-items:center;justify-content:space-between;
+  color:var(--txt-dim);font-size:.82rem;letter-spacing:.06em;
+  background:rgba(4,7,15,.8);
+}
+footer .logo{font-size:1rem;}
+.demo-note{
+  max-width:520px;font-size:.75rem;color:#5a6685;line-height:1.6;
+}
+.demo-note strong{color:var(--txt-dim);}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important;}
+  html{scroll-behavior:auto;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-scene"></div>
+<div class="smoke smoke-1"></div>
+<div class="smoke smoke-2"></div>
+
+<!-- ◆ Fixierter Diamant – bleibt beim Scrollen immer sichtbar -->
+<div id="diamond-stage">
+  <div id="diamond">
+    <svg viewBox="0 0 200 200" aria-hidden="true">
+      <defs>
+        <linearGradient id="iceGrad" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#cfe6ff"/>
+          <stop offset="50%" stop-color="#7db8ff"/>
+          <stop offset="100%" stop-color="#2f6bff"/>
+        </linearGradient>
+        <linearGradient id="facetFill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#7db8ff"/>
+          <stop offset="100%" stop-color="#0b1226"/>
+        </linearGradient>
+      </defs>
+      <circle class="diamond-ring" cx="100" cy="100" r="92"/>
+      <g id="diamond-rotor">
+        <!-- Brillant-Silhouette -->
+        <polygon class="facet-fill" points="40,72 160,72 100,178"/>
+        <polygon class="facet-fill" points="62,38 138,38 160,72 40,72"/>
+        <!-- Krone -->
+        <polygon class="facet" points="62,38 138,38 160,72 40,72"/>
+        <polygon class="facet" points="62,38 84,72 40,72"/>
+        <polygon class="facet" points="138,38 116,72 160,72"/>
+        <polygon class="facet" points="84,72 100,38 116,72"/>
+        <polygon class="facet" points="62,38 100,38 84,72"/>
+        <polygon class="facet" points="100,38 138,38 116,72"/>
+        <!-- Pavillon -->
+        <polygon class="facet" points="40,72 160,72 100,178"/>
+        <polygon class="facet" points="84,72 100,178 40,72"/>
+        <polygon class="facet" points="116,72 100,178 160,72"/>
+        <polygon class="facet" points="84,72 116,72 100,178"/>
+        <!-- Funkeln -->
+        <circle class="sparkle" cx="78" cy="58" r="2.6"/>
+        <circle class="sparkle" cx="124" cy="92" r="2.1"/>
+        <circle class="sparkle" cx="98" cy="132" r="1.8"/>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<nav id="nav">
+  <a class="logo" href="#top"><span class="gem"></span>AURA</a>
+  <ul class="nav-links">
+    <li><a href="#ueber">Lounge</a></li>
+    <li><a href="#karte">Karte</a></li>
+    <li><a href="#zeiten">Öffnungszeiten</a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
+  </ul>
+  <div class="nav-status"><span class="status-dot" id="nav-dot"></span><span id="nav-status-text">–</span></div>
+</nav>
+
+<header id="top">
+  <p class="hero-kicker">Shisha · Cocktails · Lounge — Walsrode</p>
+  <h1>AURA</h1>
+  <p class="hero-sub">Bar &amp; Lounge</p>
+  <p class="hero-claim">Wo der Abend zur <strong>Atmosphäre</strong> wird. Premium-Shisha, handverlesene Cocktails und ein Ambiente, das man in Walsrode kein zweites Mal findet.</p>
+  <div class="hero-cta">
+    <a class="btn btn-primary" href="tel:+491723878677">☎ &nbsp;Tisch reservieren</a>
+    <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&destination=Verdener+Str.+11%2C+29664+Walsrode" target="_blank" rel="noopener">◆ &nbsp;Route planen</a>
+  </div>
+  <div class="scroll-hint">Entdecken</div>
+</header>
+
+<!-- Kennzahlen -->
+<section aria-label="Kennzahlen">
+  <div class="stats">
+    <div class="stat reveal">
+      <div class="stat-num"><span class="counter" data-target="4.7" data-decimals="1">0.0</span></div>
+      <div class="stars">★★★★★</div>
+      <div class="stat-label">Google-Bewertung</div>
+    </div>
+    <div class="stat reveal reveal-d1">
+      <div class="stat-num"><span class="counter" data-target="132">0</span></div>
+      <div class="stat-label">Rezensionen</div>
+    </div>
+    <div class="stat reveal reveal-d2">
+      <div class="stat-num"><span class="counter" data-target="40">0</span><span class="unit">+</span></div>
+      <div class="stat-label">Shisha-Sorten*</div>
+    </div>
+    <div class="stat reveal reveal-d3">
+      <div class="stat-num"><span class="counter" data-target="7">0</span><span class="unit">/7</span></div>
+      <div class="stat-label">Tage geöffnet</div>
+    </div>
+  </div>
+</section>
+
+<!-- Über uns -->
+<section id="ueber">
+  <div class="about-grid">
+    <div>
+      <p class="sec-kicker reveal">Die Lounge</p>
+      <h2 class="reveal">Ein Abend, der<br>anders leuchtet.</h2>
+      <p class="lead reveal reveal-d1">Mitten in Walsrode, an der Verdener Straße 11, liegt ein Ort, der mehr ist als eine Bar: Die AURA verbindet moderne Lounge-Atmosphäre mit erstklassiger Shisha-Kultur und Cocktails, die den Namen verdienen.</p>
+      <ul class="feature-list">
+        <li class="reveal reveal-d1"><span class="diamond-bullet"></span><span><strong>Premium-Shisha-Kultur</strong> – frisch aufgesetzt, große Sortenauswahl, gepflegte Köpfe.</span></li>
+        <li class="reveal reveal-d2"><span class="diamond-bullet"></span><span><strong>Cocktails &amp; Drinks</strong> – von Klassikern bis zu eigenen Signature-Kreationen.</span></li>
+        <li class="reveal reveal-d3"><span class="diamond-bullet"></span><span><strong>Faires Preisniveau</strong> – ein kompletter Abend für 10–20&nbsp;€ pro Person.</span></li>
+      </ul>
+    </div>
+    <div class="about-visual reveal reveal-d2">
+      <div class="inner-gem"></div>
+      <div class="caption">AURA · Walsrode</div>
+    </div>
+  </div>
+</section>
+
+<!-- Karte / Leistungen -->
+<section id="karte">
+  <p class="sec-kicker reveal">Karte &amp; Erlebnis</p>
+  <h2 class="reveal">Was dich erwartet</h2>
+  <p class="lead reveal reveal-d1">Vier Gründe, warum die AURA der Treffpunkt für deinen Abend ist.</p>
+  <div class="cards">
+    <div class="card reveal">
+      <div class="card-icon">💨</div>
+      <h3>Shisha</h3>
+      <p>Über 40 Tabaksorten*, frisch und sauber aufgesetzt – vom Klassiker bis zur Spezial-Mischung der Woche.</p>
+      <span class="price">ab 12 €</span>
+    </div>
+    <div class="card reveal reveal-d1">
+      <div class="card-icon">🍸</div>
+      <h3>Cocktails &amp; Bar</h3>
+      <p>Signature-Cocktails, Longdrinks und alkoholfreie Kreationen – gemixt hinter einer Bar, die glänzt.</p>
+      <span class="price">ab 7 €</span>
+    </div>
+    <div class="card reveal reveal-d2">
+      <div class="card-icon">🛋️</div>
+      <h3>Lounge-Ambiente</h3>
+      <p>Gedämpftes Licht, bequeme Sitzecken und ein Sound, der trägt statt dröhnt – zum Ankommen und Bleiben.</p>
+      <span class="price">10–20 € p. P.</span>
+    </div>
+    <div class="card reveal reveal-d3">
+      <div class="card-icon">◆</div>
+      <h3>Events &amp; Wochenende</h3>
+      <p>Freitag &amp; Samstag bis Open End – Sportübertragungen, Special-Abende und die längsten Nächte der Stadt.</p>
+      <span class="price">Fr &amp; Sa · Open End</span>
+    </div>
+  </div>
+</section>
+
+<!-- Öffnungszeiten -->
+<section id="zeiten">
+  <p class="sec-kicker reveal">Öffnungszeiten</p>
+  <h2 class="reveal">Jetzt gerade?</h2>
+  <div class="hours-wrap" style="margin-top:44px;">
+    <div class="clock-panel reveal">
+      <div id="live-clock">--:--:--</div>
+      <div id="live-date">–</div>
+      <div id="open-badge"><span class="status-dot" id="badge-dot"></span><span id="badge-text">…</span></div>
+      <p id="open-note"></p>
+    </div>
+    <div class="reveal reveal-d1">
+      <table class="hours-table" id="hours-table">
+        <tbody>
+          <tr data-day="1"><td>Montag</td><td>17:00 – 02:00</td></tr>
+          <tr data-day="2"><td>Dienstag</td><td>17:00 – 02:00</td></tr>
+          <tr data-day="3"><td>Mittwoch</td><td>17:00 – 02:00</td></tr>
+          <tr data-day="4"><td>Donnerstag</td><td>17:00 – 02:00</td></tr>
+          <tr data-day="5"><td>Freitag</td><td>17:00 – Open End</td></tr>
+          <tr data-day="6"><td>Samstag</td><td>17:00 – Open End</td></tr>
+          <tr data-day="0"><td>Sonntag</td><td>17:00 – 02:00</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Kontakt -->
+<section id="kontakt">
+  <p class="sec-kicker reveal">Kontakt</p>
+  <h2 class="reveal">Reserviere deinen Platz</h2>
+  <p class="lead reveal reveal-d1">Ein Anruf genügt – oder plane direkt deine Route zu uns.</p>
+  <div class="contact-grid">
+    <div class="contact-card reveal">
+      <h3>Adresse</h3>
+      <p>Verdener Str. 11<br>29664 Walsrode</p>
+    </div>
+    <div class="contact-card reveal reveal-d1">
+      <h3>Telefon</h3>
+      <p><a class="big-link" href="tel:+491723878677">0172 387 86 77</a></p>
+      <p style="margin-top:8px;font-size:.85rem;">Reservierungen &amp; Anfragen</p>
+    </div>
+    <div class="contact-card reveal reveal-d2">
+      <h3>Social</h3>
+      <p><a class="big-link" href="https://www.instagram.com/aura_walsrode" target="_blank" rel="noopener">@aura_walsrode</a></p>
+      <p style="margin-top:8px;font-size:.85rem;">News, Specials &amp; Events auf Instagram</p>
+    </div>
+  </div>
+  <div class="contact-cta reveal reveal-d2">
+    <a class="btn btn-primary" href="tel:+491723878677">☎ &nbsp;Jetzt anrufen</a>
+    <a class="btn btn-ghost" href="https://www.google.com/maps/dir/?api=1&destination=Verdener+Str.+11%2C+29664+Walsrode" target="_blank" rel="noopener">◆ &nbsp;Google-Maps-Route</a>
+  </div>
+</section>
+
+<footer>
+  <a class="logo" href="#top"><span class="gem"></span>AURA</a>
+  <p class="demo-note"><strong>Design-Konzept / Demo.</strong> Diese Seite ist ein unverbindlicher Website-Entwurf. Kennzahlen mit * sind Platzhalter und werden gemeinsam mit dem Inhaber finalisiert. Keine offizielle Seite der AURA Bar &amp; Lounge.</p>
+  <p>Walsrode · Verdener Str. 11</p>
+</footer>
+
+<script>
+/* ============ Diamant: Dauerrotation + Scroll-Kopplung ============ */
+(function(){
+  const rotor=document.getElementById('diamond-rotor');
+  const dia=document.getElementById('diamond');
+  window.addEventListener('scroll',()=>{
+    // sanftes Pendeln (max ±12°) und leichtes Wachsen beim Scrollen
+    const tilt=Math.sin(window.scrollY/700)*12;
+    rotor.setAttribute('transform','rotate('+tilt+' 100 100)');
+    const s=1+Math.min(window.scrollY/6000,0.12);
+    dia.style.scale=s;
+  },{passive:true});
+})();
+
+/* ============ Nav-Hintergrund beim Scrollen ============ */
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>40);},{passive:true});
+
+/* ============ Scroll-Reveal ============ */
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:0.15});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+/* ============ Animierte Counter ============ */
+const counterIO=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(!e.isIntersecting)return;
+    counterIO.unobserve(e.target);
+    const el=e.target,target=parseFloat(el.dataset.target),dec=parseInt(el.dataset.decimals||'0');
+    const dur=1600,start=performance.now();
+    function tick(now){
+      const p=Math.min((now-start)/dur,1);
+      const eased=1-Math.pow(1-p,3);
+      el.textContent=(target*eased).toFixed(dec);
+      if(p<1)requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+},{threshold:0.6});
+document.querySelectorAll('.counter').forEach(el=>counterIO.observe(el));
+
+/* ============ Live-Uhr + Geöffnet-Status (Europe/Berlin) ============
+   So–Do: 17:00–02:00 · Fr & Sa: 17:00–Open End (Status bis 06:00) */
+const DAYS=['Sonntag','Montag','Dienstag','Mittwoch','Donnerstag','Freitag','Samstag'];
+function berlinNow(){
+  const p=new Intl.DateTimeFormat('de-DE',{timeZone:'Europe/Berlin',weekday:'short',hour:'2-digit',minute:'2-digit',second:'2-digit',day:'2-digit',month:'long',year:'numeric',hour12:false}).formatToParts(new Date());
+  const g=t=>p.find(x=>x.type===t).value;
+  const wd={'So':0,'Mo':1,'Di':2,'Mi':3,'Do':4,'Fr':5,'Sa':6}[g('weekday').replace('.','')];
+  return{day:wd,h:parseInt(g('hour'))%24,m:parseInt(g('minute')),s:parseInt(g('second')),date:g('day')+'. '+g('month')+' '+g('year')};
+}
+function openState(n){
+  // Sitzung, die HEUTE um 17:00 begann
+  const isWknd=d=>d===5||d===6;
+  const mins=n.h*60+n.m;
+  if(mins>=17*60)return{open:true,note:isWknd(n.day)?'Heute geöffnet bis Open End':'Heute geöffnet bis 02:00 Uhr'};
+  // Nach Mitternacht: Sitzung von GESTERN läuft evtl. noch
+  const yest=(n.day+6)%7;
+  const cutoff=isWknd(yest)?6*60:2*60;
+  if(mins<cutoff)return{open:true,note:isWknd(yest)?'Open End – die Nacht läuft noch':'Geöffnet bis 02:00 Uhr'};
+  const diff=17*60-mins;
+  return{open:false,note:'Öffnet heute um 17:00 Uhr – in '+Math.floor(diff/60)+' Std. '+(diff%60)+' Min.'};
+}
+function updateClock(){
+  const n=berlinNow();
+  const pad=x=>String(x).padStart(2,'0');
+  document.getElementById('live-clock').textContent=pad(n.h)+':'+pad(n.m)+':'+pad(n.s);
+  document.getElementById('live-date').textContent=DAYS[n.day]+', '+n.date;
+  const st=openState(n);
+  const badge=document.getElementById('open-badge');
+  badge.classList.toggle('closed',!st.open);
+  document.getElementById('badge-dot').classList.toggle('closed',!st.open);
+  document.getElementById('badge-text').textContent=st.open?'Jetzt geöffnet':'Geschlossen';
+  document.getElementById('open-note').textContent=st.note;
+  document.getElementById('nav-dot').classList.toggle('closed',!st.open);
+  document.getElementById('nav-status-text').textContent=st.open?'Geöffnet':'Geschlossen';
+  document.querySelectorAll('#hours-table tr').forEach(tr=>tr.classList.toggle('today',parseInt(tr.dataset.day)===n.day));
+}
+updateClock();
+setInterval(updateClock,1000);
+</script>
+</body>
+</html>
